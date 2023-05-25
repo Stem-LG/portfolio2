@@ -1,15 +1,20 @@
-import { Box, Collapse, Typography } from "@mui/material";
+import { Box, Button, Collapse, Typography } from "@mui/material";
 import { Typewriter } from "react-simple-typewriter";
 import { ParticlesBG } from "../components/background";
-import { contactCollapse, linksCollapse } from "../atoms";
+import { certificationsCollapse, contactCollapse, linksCollapse } from "../atoms";
 import { useAtomValue, useSetAtom } from "jotai";
 import { Contact } from "@/sections/index/contact";
 import { Links } from "@/sections/index/links";
 import { NavButton, NavButtonProps } from "@/components/index/nav_button";
+import Link from "next/link";
+import { MdArrowBack } from "react-icons/md";
+import { Certification, CertificationType } from "@/components/certs/certification";
+import Scrollbars from "react-custom-scrollbars-2";
 
 export default function Index() {
     const contactOpen = useAtomValue(contactCollapse);
     const linksOpen = useAtomValue(linksCollapse);
+    const certificationsOpen = useAtomValue(certificationsCollapse);
 
     return (
         <Box
@@ -25,32 +30,96 @@ export default function Index() {
                 textAlign: "center",
             }}
         >
-            <Collapse in={!contactOpen && !linksOpen} timeout={500}>
+            <Collapse in={!contactOpen && !linksOpen && !certificationsOpen} timeout={500}>
                 {/* name section */}
                 <Greeting />
                 {/* nav buttons */}
                 <NavButtons />
             </Collapse>
-            {/* collapsed contact */}
-            <Collapse
-                in={contactOpen}
-                timeout={500}
-                sx={{ width: "100%", maxWidth: "40rem", px: "1rem" }}
-            >
-                <SectionName>Contact Me</SectionName>
-                <Contact />
+            {/* collapsed Certifications */}
+            <Collapse in={certificationsOpen} timeout={500} sx={{ width: "100%", maxWidth: { md: "80%", lg:"70%",xl:"60%" }, px: "1rem" }}>
+                <SectionName>My Certifications</SectionName>
+                <Certifications />
             </Collapse>
             {/* collapsed links */}
-            <Collapse
-                in={linksOpen}
-                timeout={500}
-                sx={{ width: "100%", maxWidth: "40rem", px: "1rem" }}
-            >
+            <Collapse in={linksOpen} timeout={500} sx={{ width: "100%", maxWidth: "40rem", px: "1rem" }}>
                 <SectionName>My Links</SectionName>
                 <Links />
             </Collapse>
+            {/* collapsed contact */}
+            <Collapse in={contactOpen} timeout={500} sx={{ width: "100%", maxWidth: "40rem", px: "1rem" }}>
+                <SectionName>Contact Me</SectionName>
+                <Contact />
+            </Collapse>
             {/* particles bg */}
             <ParticlesBG />
+        </Box>
+    );
+}
+
+function Certifications() {
+    const setCertificationsOpen = useSetAtom(certificationsCollapse);
+
+    const certInfo: CertificationType[] = [
+        {
+            title: "Machine Learning Specialization",
+            issuer: "DeepLearning.ai, Stanford",
+            platform: "Coursera",
+            date: new Date("05/21/2023"),
+            image: "/deeplearning.ai.png",
+            link: "#",
+            presential: false,
+        },
+        {
+            title: "IT Support Specialization",
+            issuer: "Google",
+            platform: "Coursera",
+            date: new Date("01/10/2023"),
+            image: "/google.png",
+            link: "#",
+            presential: false,
+        },
+        {
+            title: "IT Automation with Python Specialization",
+            issuer: "Google",
+            platform: "Coursera",
+            date: new Date("02/10/2023"),
+            image: "/google.png",
+            link: "#",
+            presential: false,
+        },
+    ];
+
+    return (
+        <Box>
+            <Button
+                sx={{ maxWidth: "12rem", maxHeight: "2.5rem", mx: "auto", mb: "1rem" }}
+                startIcon={<MdArrowBack />}
+                endIcon={<Box sx={{ width: "20px" }} />}
+                onClick={() => setCertificationsOpen(false)}
+                fullWidth
+            >
+                Back
+            </Button>
+            <Box
+                sx={{
+                    display: "flex",
+                    maxHeight: "calc(100vh - 7.5rem)",
+                    overflowY: "scroll",
+                    overflowX: "clip",
+                    flexWrap: "wrap",
+                    gap: "1rem",
+                    scrollbarWidth: "none",
+                    "::-webkit-scrollbar": {
+                        display: "none",
+                    },
+                    justifyContent:"center"
+                }}
+            >
+                {certInfo.map((certProps, i) => (
+                    <Certification key={i} {...certProps} />
+                ))}
+            </Box>
         </Box>
     );
 }
@@ -87,12 +156,7 @@ function Greeting() {
             <Typography sx={{ fontSize: { xs: "1.25rem", md: "2rem" } }}>
                 I{"'"}m a
                 <Typewriter
-                    words={[
-                        " FullStack Developer",
-                        " ML Enthusiast",
-                        " Freelancer",
-                        "n IT student @ ISETN",
-                    ]}
+                    words={[" FullStack Developer", " ML Enthusiast", " Freelancer", "n IT student @ ISETN"]}
                     cursorStyle="!"
                     cursor
                     cursorBlinking={true}
@@ -109,20 +173,26 @@ function Greeting() {
 function NavButtons() {
     const setContactOpen = useSetAtom(contactCollapse);
     const setLinksOpen = useSetAtom(linksCollapse);
+    const setCertificationsOpen = useSetAtom(certificationsCollapse);
 
     const myButtons = [
-        { text: "certifications", link: "#" },
-        { text: "projects", link: "#" },
+        {
+            text: "certifications",
+            btnProps: {
+                onClick: () => setCertificationsOpen(true),
+            },
+        },
+        {
+            text: "projects",
+        },
         {
             text: "links",
-            link: "#",
             btnProps: {
                 onClick: () => setLinksOpen(true),
             },
         },
         {
             text: "contact",
-            link: "#",
             btnProps: {
                 onClick: () => setContactOpen(true),
             },
@@ -147,5 +217,5 @@ function NavButtons() {
 }
 
 function SectionName({ children }: any) {
-    return <Typography sx={{ fontSize: "2rem" }}>{children}</Typography>;
+    return <Typography sx={{ fontSize: {xs:"1.8rem",sm:"2.1rem"},maxHeight:"3rem",height:"3rem" }}>{children}</Typography>;
 }

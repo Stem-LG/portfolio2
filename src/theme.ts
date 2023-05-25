@@ -9,13 +9,13 @@ const lightTheme = createTheme({
         fontFamily: "Flama",
         allVariants: {
             color: "#ffc500"
-        }  
+        }
     },
     components: {
         MuiAppBar: {
-            defaultProps:{
-                sx:{
-                    bgcolor:"primary.light"
+            defaultProps: {
+                sx: {
+                    bgcolor: "primary.light"
                 }
             }
         }
@@ -26,24 +26,24 @@ const darkTheme = createTheme({
     palette: {
         mode: "dark",
         primary: { main: "#ffc500" },
-    
+
     },
     typography: {
         fontFamily: "Flama",
-        allVariants:{
-            color:"#ffc500"
-        }
-    }
-    ,
-    components:{
-        MuiOutlinedInput:{
-            defaultProps:{
-                sx:{
-                    ".MuiOutlinedInput-notchedOutline":{
+        allVariants: {
+            color: "#ffc500"
+        },
+    },
+    
+    components: {
+        MuiOutlinedInput: {
+            defaultProps: {
+                sx: {
+                    ".MuiOutlinedInput-notchedOutline": {
                         borderColor: "primary.dark"
                     },
-                    "&:hover .MuiOutlinedInput-notchedOutline":{
-                        borderColor:"primary.main"
+                    "&:hover .MuiOutlinedInput-notchedOutline": {
+                        borderColor: "primary.main"
                     }
                 }
             }

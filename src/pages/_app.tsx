@@ -2,10 +2,11 @@ import { darkMode } from "@/atoms";
 import "@/styles/globals.css";
 import { darkTheme, lightTheme } from "@/theme";
 import { ThemeProvider } from "@emotion/react";
-import { CssBaseline } from "@mui/material";
+import { Box, CssBaseline } from "@mui/material";
 import { useAtomValue } from "jotai";
 import type { AppProps } from "next/app";
 import Head from "next/head";
+import { Animate } from "react-simple-animate";
 
 export default function App({ Component, pageProps }: AppProps) {
     const isDarkMode = useAtomValue(darkMode);
